@@ -28,6 +28,7 @@ let messageElement = document.getElementById('suggestion-message');
         messageElement.style.fontFamily = getComputedStyle(document.body).fontFamily;
         messageElement.style.pointerEvents = 'none';
         document.body.appendChild(messageElement);
+        // console.log();
     }
     if (automatedSongSuggestions) {
         messageElement.textContent = 'Press H or CTRL + H for shortcuts bar';
