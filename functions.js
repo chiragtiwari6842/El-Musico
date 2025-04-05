@@ -3,10 +3,10 @@ let playedSongs = [];
 let previousSongs = []; 
 const maxPreviousSongs = 5; 
 let isMuted = false;
-let automatedSongSuggestions = true;
+let automatedSongSuggestions = false;
 let automate_flag = true;
 let showQueueButton = false;
-
+let nameToBePrinted;
 const suggestionFill = document.getElementById('suggestion-fill');
 suggestionFill.style.width = '100%';
 
@@ -29,7 +29,7 @@ let messageElement = document.getElementById('suggestion-message');
         messageElement.style.pointerEvents = 'none';
         document.body.appendChild(messageElement);
     }
-    if (automatedSongSuggestions) {
+    if (automatedSongSuggestions && window.innerWidth > 768) {
         messageElement.textContent = 'Press H or CTRL + H for shortcuts bar';
         messageElement.style.opacity = '1'; 
         setTimeout(() => {
@@ -42,10 +42,13 @@ function playNextSong() {
         const nextSong = songQueue.shift(); 
         currentSongId = nextSong.song_id; 
         currentSongName = nextSong.name;
+        title.textContent = nameToBePrinted;
         PlayAudio(nextSong.audio_url, nextSong.song_id);
     }
 }
 setInterval(function() {
+    title = document.getElementById('title-box');
+    nameToBePrinted = songQueue[0].name;
     if (songQueue.length == 1 && automatedSongSuggestions) {
         automate_flag = true;
     }
@@ -63,6 +66,7 @@ function PlayAudio(audio_url, song_id){//Take care of this and name required to 
     source.src = audio_url;
     try{
             var name = document.getElementById(song_id+"-n").textContent;
+            title.textContent = name;
             var song = data.songs && data.songs[0]; 
             if (song) {
                 var album = song.album || 'Unknown Album';
@@ -98,7 +102,7 @@ function PlayAudio(audio_url, song_id){//Take care of this and name required to 
     previousSongs.push({ audio_url: audio_url, song_id: song_id }); 
     audio.onended = playNextSong;
     try{
-        // console.log(name);
+        // console.log(name);   
         if(automatedSongSuggestions && songQueue.length == 0){
             getRecommendations(name);
         }
@@ -106,11 +110,13 @@ function PlayAudio(audio_url, song_id){//Take care of this and name required to 
     catch(error) {
         //do nothing
     }
-    
+    // console.log(songQueue);
 };
 
 function getRecommendations(songName) {
-    fetch(`http://127.0.0.1:5000/get_recommendations?song_name=${encodeURIComponent(songName)}`)
+    // Calling my own API
+    //https://wide-fredia-other6842-27416da6.koyeb.app/get_recommendations?song_name=${encodeURIComponent(songName)}
+    fetch(`https://wide-fredia-other6842-27416da6.koyeb.app/get_recommendations?song_name=${encodeURIComponent(songName)}`)
         .then(response => response.json())
         .then(data => {
             if (data.recommendations) {
@@ -122,6 +128,8 @@ function getRecommendations(songName) {
             console.error('Error:', error);
         });
 }
+//Alternate own API
+//https://recommendations-nc9w.onrender.com/get_recommendations?song_name=
 
 function displayRecommendations(songNames) {
     songNames.forEach(songName => {
@@ -133,7 +141,12 @@ function displayRecommendations(songNames) {
                     const song = data.data.results[0]; 
                     const downloadUrl = song.downloadUrl?.find(url => url.quality === "320kbps")?.link;
                     if (downloadUrl) {
-                        AddAutomatedQueue(downloadUrl, song.id, song.name, song.primaryArtists);
+                        if (player.paused) {
+                            PlayAudio(downloadUrl, song.id);
+                        }
+                        else{
+                            AddAutomatedQueue(downloadUrl, song.id, song.name, song.primaryArtists);
+                        }
                     }  
                 } 
             })
@@ -188,6 +201,7 @@ function AddToQueue(audio_url, song_id, song_name, song_artist){
             name: song_name, 
             artist: song_artist 
         });
+        // nameToBePrinted = songQueue[0];
         localStorage.setItem('songQueue', JSON.stringify(songQueue));
         // playSongFromQueue(songDetails.name, audio_url);
         const audio = document.getElementById('player');
@@ -198,15 +212,14 @@ function AddToQueue(audio_url, song_id, song_name, song_artist){
         // PlayAudio(audio_url, song_id);
         saveQueue(song_id);
     }
-
+    // console.log(nameToBePrinted);
 }
 
 function AddAutomatedQueue(audio_url, song_id, song_name, song_artist) {
-    if (!automatedSongSuggestions) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        alert("Tip: Turn on automated playlist for better listening experience.")
-        return;
-    }
+    // if (!automatedSongSuggestions) {
+    //     window.scrollTo({ top: 0, behavior: 'smooth' });
+    //     return;
+    // }
     // const songDetails = results_objects[song_id]?.track;
     // if (songDetails) {
     // console.log(audio_url);
@@ -219,7 +232,7 @@ function AddAutomatedQueue(audio_url, song_id, song_name, song_artist) {
         name: song_name, 
         artist: song_artist 
     });
-    // localStorage.setItem('songQueue', JSON.stringify(songQueue));
+    localStorage.setItem('songQueue', JSON.stringify(songQueue));
     saveQueue(song_id);
 }
 
@@ -254,9 +267,12 @@ window.onload = function() {
     }
 };
 
+const playPauseIcon = document.getElementById('play-pause-icon');
+// const player = document.getElementById('player');
+
+playPauseIcon.addEventListener('click', togglePlay);
+
 function togglePlay() {
-    const player = document.getElementById('player');
-    const playPauseIcon = document.querySelector('.play-pause');
     if (songQueue.length > 0 || playedSongs.length > 0) {
         if (player.paused) {
             player.play();
@@ -272,6 +288,10 @@ const audio = document.getElementById('player');
 
 audio.onplay = function() {
     document.querySelector('.play-pause').src = "assets/pause.png";
+};
+
+audio.onpause = function() {
+    document.getElementById('play-pause-icon').src = "assets/play.png";  
 };
 
 audio.ontimeupdate = function() {
@@ -356,16 +376,17 @@ document.addEventListener('keydown', function(event) {
     }
 
     if (event.code === 'Space' || event.code == 'Enter') {
+        togglePlay();
         event.preventDefault();
-        if (songQueue.length > 0 || playedSongs.length > 0) {
-            if (player.paused) {
-                player.play();
-                document.querySelector('.play-pause').src = "assets/pause.png"; 
-            } else {
-                player.pause();
-                document.querySelector('.play-pause').src = "assets/play.png"; 
-            }
-        }
+        // if (songQueue.length > 0 || playedSongs.length > 0) {
+        //     if (player.paused) {
+        //         player.play();
+        //         document.querySelector('.play-pause').src = "assets/pause.png"; 
+        //     } else {
+        //         player.pause();
+        //         document.querySelector('.play-pause').src = "assets/play.png"; 
+        //     }
+        // }
     }
 
     if (event.code === 'ArrowUp' || event.code === 'ArrowRight') {
@@ -591,7 +612,7 @@ function updateProgressBar() {
 
     const progressBarWidth = document.getElementById('progress-bar').clientWidth;
     const handlePosition = (progressPercent / 100) * progressBarWidth;
-    handle.style.left = `${handlePosition}px`;
+    // handle.style.left = `${handlePosition}px`;
 }
 
 let songRepeat = false;
@@ -667,6 +688,7 @@ function showQueue() {
 
     if (showQueueButton) {
         if (!queueElement) {
+            // Create the main queue display element
             queueElement = document.createElement('div');
             queueElement.id = 'queue-display';
             queueElement.style.position = 'fixed';
@@ -681,10 +703,14 @@ function showQueue() {
             queueElement.style.maxHeight = '300px';
             queueElement.style.overflowY = 'auto';
             queueElement.style.zIndex = '1000'; 
+            queueElement.style.alignContent = 'center';
+            queueElement.style.alignItems = 'center';
+
             document.body.appendChild(queueElement);
         }
 
         queueElement.innerHTML = ''; 
+        
         if (songQueue.length > 0) {
             songQueue.forEach((song, index) => {
                 const songItem = document.createElement('div');
@@ -702,7 +728,40 @@ function showQueue() {
         }
         document.removeEventListener('click', closeQueue); 
     }
+        const clearQueueButton = document.createElement('clear-queue-button');
+        clearQueueButton.textContent = 'Clear Queue';
+        clearQueueButton.style.backgroundColor = '#055ada';
+        clearQueueButton.style.color = '#fff';
+        clearQueueButton.style.border = 'none';
+        clearQueueButton.style.padding = '8px 15px';
+        clearQueueButton.style.borderRadius = '5px';
+        clearQueueButton.style.marginBottom = '0px'; 
+        clearQueueButton.style.marginLeft = '20px';
+        clearQueueButton.style.display = 'none';
+        // clearQueueButton.style.height = '30px';
+        clearQueueButton.style.cursor = 'pointer';
+        clearQueueButton.style.marginTop = '10px';
+        clearQueueButton.style.width = '107px';
+        clearQueueButton.style.textAlign = 'center';
+        clearQueueButton.style.alignContent = 'center';
+        clearQueueButton.style.alignItems = 'center';
+        // clearQueueButton.style.height = '25px';
+        // clearQueueButton.style.marginBottom = '2px';
+        clearQueueButton.style.transition = 'background-color 0.3s ease'; 
+        clearQueueButton.onmouseover = () => clearQueueButton.style.backgroundColor = 'orange'; 
+        clearQueueButton.onmouseout = () => clearQueueButton.style.backgroundColor = '#055ada'; 
+        clearQueueButton.addEventListener('click', function() {
+            localStorage.clear();
+            songQueue = []
+            showQueue();
+        });
+        queueElement.appendChild(clearQueueButton);
+        if (songQueue.length > 0 ){
+            clearQueueButton.style.display = 'block';
+        }
 }
+
+
 function closeQueue(event) {
     const queueElement = document.getElementById('queue-display');
     if (queueElement && !queueElement.contains(event.target) && event.target.id !== 'queue') {
@@ -712,3 +771,50 @@ function closeQueue(event) {
     }
 }
 
+
+function showPlaylists() {
+    const overlay = document.createElement('div');
+    overlay.classList.add('playlist-overlay');
+    
+    const playlistBox = document.createElement('div');
+    playlistBox.classList.add('playlist-box');
+    
+    const clickablePlaylist = document.createElement('div');
+    clickablePlaylist.classList.add('clickable-playlist');
+    clickablePlaylist.textContent = '▶ Chirag\'s Playlist';
+    
+    clickablePlaylist.onclick = () => {
+        getPlaylist();
+        document.body.removeChild(overlay);
+    };
+
+    playlistBox.appendChild(clickablePlaylist);
+
+    const closeBtn = document.createElement('span');
+    closeBtn.classList.add('close-btn');
+    closeBtn.textContent = 'x';
+    closeBtn.onclick = () => {
+        document.body.removeChild(overlay);
+    };
+    
+    playlistBox.appendChild(closeBtn);
+    
+    overlay.appendChild(playlistBox);
+    
+    document.body.appendChild(overlay);
+}
+
+
+function getPlaylist() {
+    fetch('Playlist_Chirag.json')  
+        .then(response => response.json())
+        .then(data => {
+            // console.log(data); 
+            const songName = data.map(song => song.track_name);
+            displayRecommendations(songName);
+        })
+        .catch(error => {
+            console.error('Error fetching the playlist:', error);
+        });
+        playNextSong();
+}

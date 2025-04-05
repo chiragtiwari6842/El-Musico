@@ -91,4 +91,55 @@ audio::-webkit-media-controls-panel{
   border: 0;
   border-radius: 5px;
   padding: 10px;
+  user-select: none;
+}
+
+.suggestions-button {
+  opacity: 0%;
+}
+
+.playlist-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);  /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  color: white;
+  font-size: 24px;
+}
+
+.playlist-box {
+  background-color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  width: 60%;
+  text-align: center;
+  position: relative;
+}
+
+.clickable-playlist {
+  font-size: 36px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 20px;
+  display: inline-block;
+  transition: opacity 0.3s;
+}
+
+.clickable-playlist:hover {
+  opacity: 0.7;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 30px;
+  cursor: pointer;
+  color: white;
 }

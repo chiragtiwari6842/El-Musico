@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Player</title>
+    <title id="title-box">Music Player</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bitter:400,700">
@@ -14,8 +14,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 offset-md-2">
-                    <h1 class="text-center" style="margin: 0px;">El-Musico</h1>
-                    <h3 class="text-center" style="color: rgba(249,255,255,0.81);font-family: Bitter, serif;">The Humanized Music Player</h3>
+                    <h1 class="text-center" style="margin: 0px;user-select: none;">El-Musico</h1>
+                    <h3 class="text-center" style="color: rgba(249,255,255,0.81);font-family: Bitter, serif;user-select: none;">The Humanized Music Player</h3>
                 </div>
             </div>
         </div>
@@ -33,7 +33,7 @@
                             <option value="1">48kbps</option>
                         </select></div>
                         <div id="suggestions-button" class="suggestions-button">
-                            <span class="suggestions-text" style="font-family: Bitter, serif; width: 115px; margin-right: 0px;"s>Auto-Playlist</span>
+                            <span class="suggestions-text" style="font-family: Bitter, serif; width: 115px; margin-right: 0px;user-select: none;"s>Auto-Playlist</span>
                             <div class="dot" id="dot"></div>
                             <div class="suggestion-fill-bar" style="margin-left: 0px; width: 40px; height: 14px;" onclick="toggleAutomatedSongSuggestions()">
                                 <div id="suggestion-fill" class="suggestion-fill"></div>
@@ -44,16 +44,18 @@
                     <div class="container" style="padding: 0px;">
                         <div class="intro">
                             <form class="text-center" action="#" method="get">
-                                <div style="width: 95%;margin: auto;padding: 3px;" placeholder="Enter Song, Artist or Album name"><input class="form-control float-left fit-content" type="text" id="music-search-box" style="margin: 0px;color: var(--gray-dark);max-width: 100%;width: 75%;border-radius: 20px;" placeholder="Search for a Song or Artist"><button class="btn btn-primary" id="search-trigger" type="submit" title="Search" style="text-align: center; border-radius: 20px;" onclick="MusicSearch()">Search</button></div>
-                                <h5 class="text-uppercase text-center" style="color: rgb(165,255,184);">Results</h5>
+                                <div style="width: 95%;margin: auto;padding: 3px;" placeholder="Enter Song, Artist or Album name"><input class="form-control float-left fit-content" type="text" id="music-search-box" style="margin: 0px;color: var(--gray-dark);max-width: 100%;width: 75%;border-radius: 20px;" placeholder="Search for a Song or Artist"><button class="btn btn-primary" id="search-trigger" type="submit" title="Search" style="text-align: center; border-radius: 20px;" onclick="MusicSearch()">Search</button>
+                                    </div>
+                                <h5 class="text-uppercase text-center" style="color: rgb(165,255,184);user-select:none;">Results</h5>
                             </form>
+                            <button style="color: #2d5f6e; height: auto; width: auto; margin-right: 0px; display: flex; align-items: center; justify-content: center;" onclick="showPlaylists()">Playlists</button>
                         </div>
                             <div id="music-results" style="margin-bottom: 20px;">
                                 <h5>Featured</h5>
                             </div>
                             <div class="text-center" style="width:100%">
-                                <button id="first-page" title="First Page" style="width: 48%;">Back To First Page</button>
-                                <button id="next" title="Next" style="width: 48%;">Next</button>
+                                <button id="first-page" title="First Page" style="width: 48%;user-select: none;">Back To First Page</button>
+                                <button id="next" title="Next" style="width: 48%;user-select: none;">Next</button>
                             </div>
                             <div class="button-container">
                             </div>
@@ -65,13 +67,14 @@
             </div>
         </div>
     </div>
-    <div class="music-player" id="audio-player">    
+
+    <div class="music-player" id="audio-player">
         <div class="progress-controller">
             <div class="control-buttons">
                 <img id="repeat" class="repeat-button" src="assets/repeat.png" alt="Repeat" onclick="repeatSong()">
                 <img id="left-seek" class="left-button" src="assets/forward.png" alt="Previous" onclick="playPreviousSong()">
                 <span class="tooltip">Prev Song</span>
-                <img id="play-pause-icon" class="play-pause" src="assets/play.png" alt="Play" onclick="togglePlay()">
+                <img id="play-pause-icon" class="play-pause" src="assets/play.png" alt="Play">
                 <img id="right-seek" class="right-button" src="assets/forward.png" alt="Next" onclick="playNextSong()">
                 <span class="tooltip">Next Song</span>
                 <img id="queue" class="queue-button" src="assets/queue.png" alt="Show Queue" onclick="showQueue()">
@@ -217,16 +220,19 @@
             height: 28px;
             cursor: pointer; 
             transform: rotate(180deg);
+            user-select: none;
         }
         .right-button{
             width: 28px;
             height: 28px;
             cursor: pointer; 
+            user-select: none;
         }
         .queue-button{
             width: 32px;
             height: 32px;
             cursor: pointer;
+            user-select: none;
             /* margin-left: 10px; */
             /* margin-left: 400px; */
         }
@@ -234,9 +240,13 @@
             width: 28px;
             height: 28px;
             cursor: pointer; 
-            display: flex; 
+            display: block;
+            position: relative; 
             align-items: center;
-            justify-content: center 
+            justify-content: center;
+            pointer-events: auto;
+            user-select: none;
+            z-index: 999;
         }
 
         .progress-container {
@@ -266,6 +276,7 @@
             width: 0%;
             border-radius: 10px;
             background-color: #055ada;
+            user-select: none;
             z-index: 1;
         }
         .progress::-moz-range-thumb {
@@ -281,6 +292,7 @@
             height: 5px; 
             background: #055ada; 
             border-radius: 5px; 
+            user-select: none;
             cursor: pointer; 
         }
         .volume-slider:hover {
@@ -322,6 +334,7 @@
             height: 32px;
             /* margin-bottom: 20px; */
             cursor: pointer;
+            user-select: none;
         }
         .repeat-button {
             display: flex;
@@ -330,6 +343,7 @@
             cursor: pointer;
             position: relative;
             z-index: 10;
+            user-select: none;
         }
         .suggestions-button {
             display: flex;
@@ -420,10 +434,28 @@
             /* color: #055ada;  */
             border-radius: 3px; width: 50px;
             text-align: center;
+            user-select: none;
         }
         @media screen and (max-width: 767px) {
             .volume-bar {
                 display: none;
+            }
+            .dot {
+                top: 323px;
+            }
+            #current-time {
+                margin-left: 0px;
+                padding-left: 10px;
+                padding-right: 0px;
+                margin-right: 0px;
+                /* background-color: #2d5; */
+            }
+            .progress-bar {
+                width: 220px;
+            }
+            #duration-bar {
+                margin-left: 0px;
+                padding-left: 0px;
             }
         }
     </style>
