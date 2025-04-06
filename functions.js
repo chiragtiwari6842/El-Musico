@@ -9,14 +9,12 @@ let showQueueButton = false;
 
 const suggestionFill = document.getElementById('suggestion-fill');
 suggestionFill.style.width = '100%';
-
-let messageElement = document.getElementById('suggestion-message');
-    if (!messageElement) {
+function messageElementsDetails(text_content,top_px,right_px){
+    let messageElement = document.getElementById('suggestion-message');
         messageElement = document.createElement('div');
-        // messageElement.id = 'suggestion-message';
         messageElement.style.position = 'fixed';
-        messageElement.style.bottom = '100px';
-        messageElement.style.right = '60px';
+        messageElement.style.top = top_px;
+        messageElement.style.right = right_px;
         messageElement.style.backgroundColor = '#333';
         messageElement.style.color = '#fff';
         messageElement.style.border = '4px solid #055ada';
@@ -25,18 +23,17 @@ let messageElement = document.getElementById('suggestion-message');
         messageElement.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.3)';
         messageElement.style.opacity = '0'; 
         messageElement.style.transition = 'opacity 0.5s, transform 0.3s';
-        messageElement.style.fontFamily = getComputedStyle(document.body).fontFamily;
         messageElement.style.pointerEvents = 'none';
+        messageElement.style.fontFamily = getComputedStyle(document.body).fontFamily;
         document.body.appendChild(messageElement);
-        // console.log();
-    }
-    if (automatedSongSuggestions) {
-        messageElement.textContent = 'Press H or CTRL + H for shortcuts bar';
-        messageElement.style.opacity = '1'; 
+        messageElement.textContent = text_content;
+        messageElement.style.opacity = '1';
+        messageElement.style.transform = 'translateY(-10px)'; 
         setTimeout(() => {
             messageElement.style.opacity = '0'; 
-        }, 8000);
-    }
+        }, 3000);
+}
+messageElementsDetails("Press H or CTRL + H for shortcuts bar","100px","60px");
 
 function playNextSong() {
     if (songQueue.length > 0) {
@@ -45,8 +42,10 @@ function playNextSong() {
         currentSongName = nextSong.name;
         PlayAudio(nextSong.audio_url, nextSong.song_id);
     }
+
 }
 setInterval(function() {
+
     if (songQueue.length == 1 && automatedSongSuggestions) {
         automate_flag = true;
     }
@@ -58,17 +57,17 @@ setInterval(function() {
     }
 }, 1000); 
 
-function PlayAudio(audio_url, song_id){//Take care of this and name required to get recommendations
+function    PlayAudio(audio_url, song_id){//Take care of this and name required to get recommendations
     var audio = document.getElementById('player');
-    var source = document.getElementById('audioSource');
+    var source = document.getElementById('audioSource');    
     source.src = audio_url;
+
     try{
             var name = document.getElementById(song_id+"-n").textContent;
-            var song = data.songs && data.songs[0]; 
+            var song = data.songs && data.songs[0];
             if (song) {
                 var album = song.album || 'Unknown Album';
-                var image = song.image || 'default-image.jpg'; 
-
+                var image = song.image || 'default-image.jpg';
                 document.title = name + " - " + album;
                 document.getElementById("player-name").innerHTML = name;
                 document.getElementById("player-album").innerHTML = album;
@@ -151,38 +150,32 @@ function searchSong(search_term){
 }
 
 
+
 function AddToQueue(audio_url, song_id, song_name, song_artist){
     if (automatedSongSuggestions) {
         let messageElement = document.getElementById('suggestion-message');
         if (!messageElement) {
-            messageElement = document.createElement('div');
-            // messageElement.id = 'suggestion-message';
-            messageElement.style.position = 'fixed';
-            messageElement.style.top = '180px';
-            messageElement.style.right = '10px';
-            messageElement.style.backgroundColor = '#333';
-            messageElement.style.color = '#fff';
-            messageElement.style.border = '4px solid #055ada';
-            messageElement.style.padding = '15px';
-            messageElement.style.borderRadius = '15px';
-            messageElement.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.3)';
-            messageElement.style.opacity = '0'; 
-            messageElement.style.transition = 'opacity 0.5s, transform 0.3s';
-            messageElement.style.pointerEvents = 'none';
-            messageElement.style.fontFamily = getComputedStyle(document.body).fontFamily;
-            document.body.appendChild(messageElement);
+            messageElementsDetails("Please off automated suggestions to add songs manually","180px","10px");
         }
-        messageElement.textContent = 'Please off automated suggestions to add songs manually';
-        messageElement.style.opacity = '1';
-        messageElement.style.transform = 'translateY(-10px)'; 
-        setTimeout(() => {
-            messageElement.style.opacity = '0'; 
-        }, 3000);
         window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
     }
     const songDetails = results_objects[song_id]?.track;
+    // console.log({"SongDetails":songDetails,
+    //     "ResultsObj":results_objects
+    // })
     if (songDetails) {
+        // Before pushing into queue check if song is already available
+        let isDup = false;
+        songQueue.forEach((song) => {
+            if(song.name === song_name){
+                isDup = true;
+            }
+        });
+        if(isDup){
+            messageElementsDetails(`"${song_name}" already in Queue`,"90px","320px"); 
+            return;
+        }
         songQueue.push({
             audio_url: audio_url,
             song_id: song_id,
@@ -190,6 +183,11 @@ function AddToQueue(audio_url, song_id, song_name, song_artist){
             artist: song_artist 
         });
         localStorage.setItem('songQueue', JSON.stringify(songQueue));
+        localStorage.setItem('currentSongName',JSON.stringify(song_name));
+        // console.log({"SongQueue from AddQueue func":songQueue,
+        //     "LocalStorage AddQueue":localStorage
+        // });
+
         // playSongFromQueue(songDetails.name, audio_url);
         const audio = document.getElementById('player');
         // if (songQueue.length == 1 && !audio.play()){
@@ -198,6 +196,8 @@ function AddToQueue(audio_url, song_id, song_name, song_artist){
         // }
         // PlayAudio(audio_url, song_id);
         saveQueue(song_id);
+        messageElementsDetails(`"${song_name}" added to Queue`,"90px","320px"); 
+        
     }
 
 }
@@ -222,6 +222,7 @@ function AddAutomatedQueue(audio_url, song_id, song_name, song_artist) {
     });
     // localStorage.setItem('songQueue', JSON.stringify(songQueue));
     saveQueue(song_id);
+    
 }
 
 function saveQueue(currentSongId) {
@@ -231,6 +232,7 @@ function saveQueue(currentSongId) {
     if (currentSong) {
         localStorage.setItem('currentAudioUrl', currentSong.audio_url); // Save audio_url
     }
+    
 }
 
 function loadQueue() {
@@ -248,8 +250,18 @@ function loadQueue() {
 }
 
 window.onload = function() {
-    loadQueue(); 
-    if (songQueue.length > 0) {
+    loadQueue();
+    
+    // Restore liked states for initial load
+    const likedSongs = JSON.parse(localStorage.getItem('likedSongs') || '{}');
+    Object.keys(likedSongs).forEach(songId => {
+        const button = document.querySelector(`[data-song-id="${songId}"]`);
+        if(button && likedSongs[songId]) {
+            button.classList.add('liked');
+        }
+    });
+    
+    if(songQueue.length > 0) {
         const firstSong = songQueue[0];
         PlayAudio(firstSong.url, firstSong.song_id);
     }
@@ -713,3 +725,20 @@ function closeQueue(event) {
     }
 }
 
+function toggleLike(songId) {
+    const button = document.querySelector(`[data-song-id="${songId}"]`);
+    const isLiked = button.classList.toggle('liked');
+    
+    // Save to localStorage
+    const likedSongs = JSON.parse(localStorage.getItem('likedSongs') || '{}');
+    likedSongs[songId] = isLiked;
+    localStorage.setItem('likedSongs', JSON.stringify(likedSongs));
+  }
+
+
+  document.addEventListener('click', function(e) {
+    if(e.target.classList.contains('like-button')) {
+        const songId = e.target.dataset.songId;
+        toggleLike(songId);
+    }
+});	

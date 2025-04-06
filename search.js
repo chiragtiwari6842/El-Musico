@@ -110,6 +110,17 @@ async function doMusicSearch(query,NotScroll,page){
                         <p id="${song_id}-a" class="fit-content" style="margin:0px;color:#fff;max-width:100%;">${album_name}<br/></p>
                         <p id="${song_id}-ar" class="fit-content" style="margin:0px;color:#fff;max-width:100%;">${song_artist}<br/></p>
                         <button class="btn btn-primary song-btn" type="button" style="margin:0px 2px;" title="Play" onclick='PlayAudio("${download_url}","${song_id}")'>▶</button>
+                        <button class="btn like-button" title="Like" 
+    style="margin:0px 2px;" 
+    data-song-id="${song_id}" 
+    onclick="toggleLike('${song_id}')">
+    <svg viewBox="0 0 24 24">
+        <path class="heart-outline" 
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        <path class="heart-filled" 
+              d="M16.5 3C14.76 3 13.09 3.81 12 5.09 10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3z"/>
+    </svg>
+</button>
                         <button class="btn btn-primary song-btn" type="button" style="margin:0px 2px;" title="Add to Queue" onclick='AddToQueue("${download_url}","${song_id}", "${song_name}", "${song_artist}")'><img src="assets/add-to-queue.png" style="width:25px;height:25px"display:flex;align-items:center;></button>
                         <p class="float-right fit-content" style="margin:0px;color:#fff;padding-right:10px;padding-top:15px;">${play_time}<br/></p>
                     </div>
@@ -121,6 +132,15 @@ async function doMusicSearch(query,NotScroll,page){
     if(!NotScroll){
         document.getElementById("music-results").scrollIntoView();
     }
+    
+    // NEW: Apply liked states after rendering
+    const likedSongs = JSON.parse(localStorage.getItem('likedSongs') || '{}');
+    document.querySelectorAll('.like-button').forEach(button => {
+        const songId = button.dataset.songId;
+        if(likedSongs[songId]) {
+            button.classList.add('liked');
+        }
+    });
 }
 
 function TextAbstract(text, length){
