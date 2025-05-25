@@ -102,9 +102,9 @@ async function doMusicSearch(query,NotScroll,page){
             <div class="text-left song-container" style="margin-bottom:20px;border-radius:35px;background-color:#1c1c1c;padding:10px;">
                 <div class="row" style="margin:auto;">
                     <div class="col-auto" style="padding:0px;padding-right:0px;border-style:none;">
-                        <img id="${song_id}-i" class="img-fluid d-inline" style="width:115px;border-radius:5px;height:115px;padding-right:10px;border-radius:90px;" src="${song_image}" loading="eager"/>
+                        <img id="${song_id}-i" class="img-fluid d-inline" style="width:115px;border-radius:5px;height:115px;padding-right:10px;border-radius:90px;user-select:none;" src="${song_image}" loading="eager"/>
                     </div>
-                    <div class="col" style="border-style:none;padding:2px;">
+                    <div class="col" style="border-style:none;padding:2px;user-select:none;">
                         <p class="float-right fit-content" style="margin:0px;color:#fff;padding-right:10px;">${year}</p>
                         <p id="${song_id}-n" class="fit-content" style="margin:0px;color:#fff;max-width:100%;">${song_name}</p>
                         <p id="${song_id}-a" class="fit-content" style="margin:0px;color:#fff;max-width:100%;">${album_name}<br/></p>
@@ -140,7 +140,7 @@ if(window.location.hash){
    doMusicSearch(window.location.hash.substring(1));
 } 
 else{
-    doMusicSearch('Ayushmann Khurrana',1);
+    doMusicSearch('English',1);
 }
 
 addEventListener('hashchange', event => { });
