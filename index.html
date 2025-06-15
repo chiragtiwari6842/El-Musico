@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -15,11 +15,10 @@
             <div class="row">
                 <div class="col-md-8 offset-md-2">
                     <h1 class="text-center" style="margin: 0px;user-select: none;">El-Musico</h1>
-                    <h3 class="text-center" style="color: rgba(249,255,255,0.81);font-family: Bitter, serif;user-select: none;">The Humanized Music Player</h3>
+                    <h3 class="text-center" style="color: rgba(249,255,255,0.81);font-family: Bitter, serif;user-select: none;">Where Music Comes Alive</h3>
                 </div>
             </div>
         </div>
-        
     </header>
     <div>
         <div class="tab-content">
@@ -27,19 +26,20 @@
                 <section class="highlight-clean" style="background: url('assets/el-musico_background.png') no-repeat center center fixed; color: rgb(249,249,249);padding-top: 20px;">
                     <div class="text-center">
                         <select id="music-bitrate">
+                            <option value="3">8D (NEW)</option>
                             <option value="4" selected="">320kbps(default)</option>
                             <option value="3">160kbps</option>
                             <option value="2">96kbps</option>
                             <option value="1">48kbps</option>
                         </select></div>
-                        <div id="suggestions-button" class="suggestions-button">
+                        <!-- <div id="suggestions-button" class="suggestions-button">
                             <span class="suggestions-text" style="font-family: Bitter, serif; width: 115px; margin-right: 0px;user-select: none;"s>Auto-Playlist</span>
                             <div class="dot" id="dot"></div>
                             <div class="suggestion-fill-bar" style="margin-left: 0px; width: 40px; height: 14px;" onclick="toggleAutomatedSongSuggestions()">
                                 <div id="suggestion-fill" class="suggestion-fill"></div>
                             </div>
                             <button id="toggle-suggestions" class="toggle-button on" style= "font-family: Bitter, serif;" onclick="toggleAutomatedSongSuggestions()">ON</button>
-                        </div>
+                        </div> -->
                     <p class="text-center" style="padding: 0px 5px;"></p>
                     <div class="container" style="padding: 0px;">
                         <div class="intro">
@@ -60,21 +60,19 @@
                             <div class="button-container">
                             </div>
                         <div style="padding-bottom: 40px;">
-
                         </div>
                     </div>
                 </section>
             </div>
         </div>
     </div>
-
     <div class="music-player" id="audio-player">
         <div class="progress-controller">
             <div class="control-buttons">
                 <img id="repeat" class="repeat-button" src="assets/repeat.png" alt="Repeat" onclick="repeatSong()">
                 <img id="left-seek" class="left-button" src="assets/forward.png" alt="Previous" onclick="playPreviousSong()">
                 <span class="tooltip">Prev Song</span>
-                <img id="play-pause-icon" class="play-pause" src="assets/play.png" alt="Play">
+                <img id="play-pause-icon" class="play-pause" src="assets/play.png" alt="Play" onclick="togglePlay()">
                 <img id="right-seek" class="right-button" src="assets/forward.png" alt="Next" onclick="playNextSong()">
                 <span class="tooltip">Next Song</span>
                 <img id="queue" class="queue-button" src="assets/queue.png" alt="Show Queue" onclick="showQueue()">
@@ -91,7 +89,7 @@
         <div class="other-features">
             <!-- <img id="play-pause-icon" class="play-pause" src="assets/play.png" alt="Play"  >
             <img id="play-pause-icon" class="play-pause" src="assets/queue.png" alt="Play"  > -->
-<!--             <div class="volume-bar">
+            <div class="volume-bar">
                 <img id="volume-control" class="volume-control" src="assets/volume.png" alt="Volume" onclick="toggleVolume()">
                 <input type="range" class="volume-slider" id="volume-slider" min="0" max="1" step="0.1" value="1" />
                 <div class="progress-bar">
@@ -99,12 +97,12 @@
                 </div>
             </div>
         </div>
-        <audio id="player" controls="controls" controlsList="nodownload" style="display: none;">
+        <audio id="player" controls="controls" controlsList="nodownload" crossorigin="anonymous" style="display: none;">
             <source id="audioSource" src="">
             Your browser does not support the audio format.
         </audio>
-    </div> -->
-<!--     <style>                        
+    </div>
+    <style>
         #music-results{
         display: flex;
         flex-wrap: wrap;
@@ -186,7 +184,7 @@
             color: white;
             height: 30px;
             object-fit: cover;
-            border-radius: 10px; 
+            border-radius: 10px;
         }
 
         .song-description p {
@@ -218,14 +216,14 @@
         .left-button{
             width: 28px;
             height: 28px;
-            cursor: pointer; 
+            cursor: pointer;
             transform: rotate(180deg);
             user-select: none;
         }
         .right-button{
             width: 28px;
             height: 28px;
-            cursor: pointer; 
+            cursor: pointer;
             user-select: none;
         }
         .queue-button{
@@ -239,9 +237,9 @@
         .play-pause {
             width: 28px;
             height: 28px;
-            cursor: pointer; 
+            cursor: pointer;
             display: block;
-            position: relative; 
+            position: relative;
             align-items: center;
             justify-content: center;
             pointer-events: auto;
@@ -280,38 +278,38 @@
             z-index: 1;
         }
         .progress::-moz-range-thumb {
-            width: 600px; 
-            height: 600px; 
-            background: #fff; 
-            border-radius: 50%; 
-            cursor: pointer; 
+            width: 600px;
+            height: 600px;
+            background: #fff;
+            border-radius: 50%;
+            cursor: pointer;
         }
         .volume-slider {
             /* -webkit-appearance: none;  */
-            width: 100px; 
-            height: 5px; 
-            background: #055ada; 
-            border-radius: 5px; 
+            width: 100px;
+            height: 5px;
+            background: #055ada;
+            border-radius: 5px;
             user-select: none;
-            cursor: pointer; 
+            cursor: pointer;
         }
         .volume-slider:hover {
             background: orange;
         }
         .volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none; 
-            width: 16px; 
-            height: 16px; 
-            background: #fff; 
-            border-radius: 50%; 
-            cursor: pointer; 
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            cursor: pointer;
         }
         .volume-slider::-moz-range-thumb {
-            width: 16px; 
-            height: 16px; 
-            background: #fff; 
-            border-radius: 50%; 
-            cursor: pointer; 
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            cursor: pointer;
         }
         .other-features {
             position: absolute;
@@ -349,19 +347,19 @@
             display: flex;
             align-items: center;
             justify-content: space-around;
-            background-color: #444; 
-            border-radius: 25px; 
-            padding: 10px 20px; 
-            color: #fff; 
-            margin: 20px auto; 
-            width: 300px; 
-            cursor: pointer; 
+            background-color: #444;
+            border-radius: 25px;
+            padding: 10px 20px;
+            color: #fff;
+            margin: 20px auto;
+            width: 300px;
+            cursor: pointer;
             margin-right: 20px ;
             pointer-events: auto;
         }
 
         .suggestions-text {
-            font-size: 16px; 
+            font-size: 16px;
             margin-right: 5px;
             padding-right: 5px;
             pointer-events: none;
@@ -369,15 +367,15 @@
         }
 
         .toggle-button {
-            background-color: #555; 
-            color: #fff; 
-            border: none; 
-            border-radius: 15px; 
-            padding: 5px 10px; 
-            cursor: pointer; 
+            background-color: #555;
+            color: #fff;
+            border: none;
+            border-radius: 15px;
+            padding: 5px 10px;
+            cursor: pointer;
             width: 50px;
             margin-left: 7px;
-            transition: background-color 0.3s; 
+            transition: background-color 0.3s;
         }
 
         .toggle-button.ON {
@@ -386,24 +384,24 @@
         }
 
         .toggle-button.OFF {
-            background-color: #888; 
+            background-color: #888;
             width: 50px;
         }
 
         .suggestion-fill-bar {
-            background-color: #888; 
-            border-radius: 10px; 
+            background-color: #888;
+            border-radius: 10px;
             width: 100px;
-            height: 10px; 
+            height: 10px;
             position: relative;
             overflow: hidden;
-            margin-left: 0px; 
+            margin-left: 0px;
         }
 
         .suggestion-fill {
-            background-color: #055ada; 
-            height: 100%; 
-            width: 40px; 
+            background-color: #055ada;
+            height: 100%;
+            width: 40px;
             margin-left: 0px;
         }
 
@@ -413,13 +411,13 @@
 
         .dot {
             width: 20px;
-            height: 20px; 
+            height: 20px;
             background-color: #fff;
             border-radius: 50%;
             position: absolute;
-            right: 120px; 
-            top: 290px; 
-            transform: translateY(-50%); 
+            right: 120px;
+            top: 290px;
+            transform: translateY(-50%);
             opacity: 1;
             z-index: 10;
         }
@@ -463,62 +461,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.bundle.min.js"></script>
     <script src="functions.js"></script>
     <script src="search.js"></script>
-</body>
-</html> -->
- -->
-
-
- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>El-Musico - Temporarily Unavailable</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: #111;
-      color: #fff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-    }
-
-    .message {
-      padding: 20px;
-    }
-
-    .message h1 {
-      font-size: 2.5em;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-      color: #ff4b5c;
-    }
-
-    .message p {
-      font-size: 1.2em;
-      color: #ccc;
-    }
-
-    @media (max-width: 600px) {
-      .message h1 {
-        font-size: 1.8em;
-      }
-      .message p {
-        font-size: 1em;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="message">
-    <h1>EL-MUSICO IS OUT OF SERVICE FOR THE TIME BEING</h1>
-    <p>We're working on new features</p>
-  </div>
 </body>
 </html>
