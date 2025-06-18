@@ -52,17 +52,24 @@ let messageElement = document.getElementById('suggestion-message');
     }
 
 function playNextSong() {
-    if (songQueue.length > 0) {
+    if (!songQueue.length > 0) {
+        return;
+    }
+    if (songRepeat) {
+        const player = document.getElementById('player');
+        player.currentTime = 0;
+        player.play();
+        return;
+    }
         const nextSong = songQueue.shift();
         currentSongId = nextSong.song_id;
         currentSongName = nextSong.name;
         // title.textContent = nameToBePrinted;
         PlayAudio(nextSong.audio_url, nextSong.song_id);
-    }
 }
 setInterval(function() {
     title = document.getElementById('title-box');
-    nameToBePrinted = songQueue[0].name;
+    // nameToBePrinted = songQueue[0].name;
     if (songQueue.length == 1 && automatedSongSuggestions) {
         automate_flag = true;
     }
@@ -111,6 +118,19 @@ function enable8DAudio(audio) {
         panner.setPosition(x, 0, z);
         panner.setOrientation(-x, 0, -z);
     }, 30);
+}
+
+function playAll() {
+    const tracks = JSON.parse(localStorage.getItem('musicSearchResults') || '[]');
+    if (tracks.length === 0) {
+        console.log("No songs to play. Please perform a search first.");
+        return;
+    }
+
+    for (const track of tracks) {
+        AddToQueue(track.url_360, track.id, track.name, track.artist);
+    }
+    playNextSong();
 }
 
 function PlayAudio(audio_url, song_id){
@@ -335,7 +355,6 @@ function togglePlay() {
     
     // if (songQueue.length > 0 || playedSongs.length > 0) {
     if (!isPlaying) {
-        console.log("No audio loaded or playable");
         return;
     }
     if (player.paused) {
@@ -359,17 +378,14 @@ audio.onpause = function() {
 };
 
 audio.ontimeupdate = function() {
-    console.log("Entered");
     const progress = document.getElementById('progress');
     const currentTime = document.getElementById('current-time');
     const duration = document.getElementById('duration');
     
     const current = Math.floor(audio.currentTime);
     const total = Math.floor(audio.duration);
-    console.log("HERE");
     currentTime.textContent = `${Math.floor(current / 60)}:${('0' + (current % 60)).slice(-2)}`;
     duration.textContent = `${Math.floor(total / 60)}:${('0' + (total % 60)).slice(-2)}`;
-    console.log(duration.textContent);
     
     progress.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
     updateProgressBar();
@@ -435,18 +451,14 @@ volumeSlider.value = player.volume;
 
 document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('keydown', function(event) {
-    console.log("Hello");
     const player = document.getElementById('player');
     const searchBox = document.getElementById('music-search-box');
 
-    console.log("Hi");
     if (document.activeElement === searchBox) {
         return; 
     }
-    console.log("Hey");
     if (event.code === 'Space' || event.code == 'Enter') {
         event.preventDefault();
-        console.log("Entered in space column")
         togglePlay();
         // event.preventDefault();
         // if (songQueue.length > 0 || playedSongs.length > 0) {
@@ -675,14 +687,11 @@ function updateCurrentTime(event) {
 }
 
 function updateProgressBar() {
-    console.log(1);
     const audio = document.getElementById('player');
     const progress = document.getElementById('progress');
-    const handle = document.getElementById('progress-bar');
-    console.log(2);
+    // const handle = document.getElementById('progress-bar');
     const progressPercent = (audio.currentTime / audio.duration) * 100;
     progress.style.width = `${progressPercent}%`;
-    console.log(3);
     // const progressBarWidth = document.getElementById('progress-bar').clientWidth;
     // const handlePosition = (progressPercent / 100) * progressBarWidth;
     // handle.style.left = `${handlePosition}px`;

@@ -1,5 +1,6 @@
 var results_container = document.querySelector("#music-results")
 var results_objects = {};
+let parsedTracks = [];
 const searchUrl = "https://jiosaavn-api-privatecvc2.vercel.app/search/songs?query=";
 
 function MusicSearch() {
@@ -71,6 +72,7 @@ async function doMusicSearch(query,NotScroll,page){
         return;
     }
     lastSearch = decodeURI(window.location.hash.substring(1));
+    parsedTracks = [];
     for(let track of json){
         song_name = TextAbstract(track.name,25);
         album_name = TextAbstract(track.album.name,20);
@@ -94,6 +96,16 @@ async function doMusicSearch(query,NotScroll,page){
         var bitrate_i = bitrate.options[bitrate.selectedIndex].value;
         if(track.downloadUrl){
         var download_url = track.downloadUrl[bitrate_i]['link'];
+        parsedTracks.push({
+            id: track.id,
+            name: track.name,
+            album: track.album?.name || "",
+            artist: track.primaryArtists || "",
+            year: track.year,
+            duration: track.duration,
+            image: track.image?.find(img => img.quality === "150x150")?.link || "",
+            url_360: track.downloadUrl?.find(dl => dl.quality === "320kbps")?.link || ""
+        });
         var quality = 360;
         results_objects[song_id] = {
             track: track
@@ -117,6 +129,7 @@ async function doMusicSearch(query,NotScroll,page){
             </div>`
         ); }
     }
+    localStorage.setItem('musicSearchResults', JSON.stringify(parsedTracks));
     results_container.innerHTML = results.join(' ');
     if(!NotScroll){
         document.getElementById("music-results").scrollIntoView();

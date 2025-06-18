@@ -49,6 +49,7 @@
                                 <h5 class="text-uppercase text-center" style="color: rgb(165,255,184);user-select:none;">Results</h5>
                             </form>
                             <button style="color: #2d5f6e; height: auto; width: auto; margin-right: 0px; display: flex; align-items: center; justify-content: center;" onclick="showPlaylists()">Playlists</button>
+                             <button style="color: #2d5f6e; height: auto; width: auto; margin-right: 0px; display: flex; align-items: center; justify-content: center;" onclick="playAll()">Play All</button>
                         </div>
                             <div id="music-results" style="margin-bottom: 20px;">
                                 <h5>Featured</h5>
@@ -266,14 +267,14 @@
         }
 
         .progress-bar:hover .progress{
-            background-color: orange;
+            background-color: #055ada;
         }
         .progress {
             position: absolute;
             height: 100%;
             width: 0%;
             border-radius: 10px;
-            background-color: #055ada;
+            background-color: #ffffff;
             user-select: none;
             z-index: 1;
         }
@@ -288,19 +289,19 @@
             /* -webkit-appearance: none;  */
             width: 100px;
             height: 5px;
-            background: #055ada;
+            background: #ffffff;
             border-radius: 5px;
             user-select: none;
             cursor: pointer;
         }
         .volume-slider:hover {
-            background: orange;
+            background: #055ada;
         }
         .volume-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 16px;
             height: 16px;
-            background: #fff;
+            background: #055ada;
             border-radius: 50%;
             cursor: pointer;
         }
