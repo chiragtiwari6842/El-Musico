@@ -134,6 +134,20 @@ async function doMusicSearch(query,NotScroll,page){
     if(!NotScroll){
         document.getElementById("music-results").scrollIntoView();
     }
+    const backBtn = document.getElementById('first-page');
+    const nextBtn = document.getElementById('next');
+
+    if (page_index <= 1) {
+        backBtn.style.display = 'none';
+    } else {
+        backBtn.style.display = 'inline-block';
+    }
+
+    if (json.length < 39) {
+        nextBtn.style.display = 'none';
+    } else {
+        nextBtn.style.display = 'inline-block';
+    }
 }
 
 function TextAbstract(text, length){
