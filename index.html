@@ -44,9 +44,8 @@
                     <div class="container" style="padding: 0px;">
                         <div class="intro">
                             <form class="text-center" action="#" method="get">
-                                <div style="width: 95%;margin: auto;padding: 3px;" placeholder="Enter Song, Artist or Album name"><input class="form-control float-left fit-content" type="text" id="music-search-box" style="margin: 0px;color: var(--gray-dark);max-width: 100%;width: 75%;border-radius: 20px;" placeholder="Search for a Song or Artist"><button class="btn btn-primary" id="search-trigger" type="submit" title="Search" style="text-align: center; border-radius: 20px;" onclick="MusicSearch()">Search</button>
+                                <div style="width: 95%;margin: auto;padding: 3px;" placeholder="Enter Song, Artist or Album name"><input class="form-control float-left fit-content" type="text" id="music-search-box" style="margin: 0px;color: var(--gray-dark);max-width: 100%;width: 75%;border-radius: 20px;" placeholder="Search for a Song or Artist" autocomplete="off"><button class="btn btn-primary" id="search-trigger" type="submit" title="Search" style="text-align: center; border-radius: 20px;" onclick="MusicSearch()">Search</button>
                                     </div>
-                                <h5 class="text-uppercase text-center" style="color: rgb(165,255,184);user-select:none;">Results</h5>
                             </form>
                             <button style="color: #2d5f6e; height: auto; width: auto; margin-right: 0px; display: flex; align-items: center; justify-content: center;" onclick="showPlaylists()">Playlists</button>
                              <button style="color: #2d5f6e; height: auto; width: auto; margin-right: 0px; display: flex; align-items: center; justify-content: center;" onclick="playAll()">Play All</button>
@@ -71,10 +70,19 @@
         <div class="progress-controller">
             <div class="control-buttons">
                 <img id="repeat" class="repeat-button" src="assets/repeat.png" alt="Repeat" onclick="repeatSong()">
-                <img id="left-seek" class="left-button" src="assets/forward.png" alt="Previous" onclick="playPreviousSong()">
+                <svg id="left-seek" class="left-button" onclick="playPreviousSong()" xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 24 24" fill="#fff" style="cursor:pointer;">
+                <polygon points="3 5 11 12 3 19" />
+                <polygon points="11 5 19 12 11 19" />
+                </svg>
                 <span class="tooltip">Prev Song</span>
-                <img id="play-pause-icon" class="play-pause" src="assets/play.png" alt="Play" onclick="togglePlay()">
-                <img id="right-seek" class="right-button" src="assets/forward.png" alt="Next" onclick="playNextSong()">
+                <svg id="play-pause-icon" class="play-pause" onclick="togglePlay()" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#fff" style="cursor:pointer;">
+                    <polygon points="6,4 20,12 6,20" />
+                </svg>
+                <svg id="right-seek" class="right-button" onclick="playNextSong()" xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 24 24" fill="#fff" style="cursor:pointer;">
+                <polygon points="3 5 11 12 3 19" />
+                <polygon points="11 5 19 12 11 19" />
+                </svg>
+
                 <span class="tooltip">Next Song</span>
                 <img id="queue" class="queue-button" src="assets/queue.png" alt="Show Queue" onclick="showQueue()">
                 <span class="tooltip">Show Queue</span>
@@ -88,8 +96,6 @@
             </div>
         </div>
         <div class="other-features">
-            <!-- <img id="play-pause-icon" class="play-pause" src="assets/play.png" alt="Play"  >
-            <img id="play-pause-icon" class="play-pause" src="assets/queue.png" alt="Play"  > -->
             <div class="volume-bar">
                 <img id="volume-control" class="volume-control" src="assets/volume.png" alt="Volume" onclick="toggleVolume()">
                 <input type="range" class="volume-slider" id="volume-slider" min="0" max="1" step="0.1" value="1" />
@@ -462,5 +468,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.bundle.min.js"></script>
     <script src="functions.js"></script>
     <script src="search.js"></script>
+    <script src="shortcuts.js"></script>
 </body>
 </html>
