@@ -2,7 +2,14 @@
     width: fit-content;
     width: -moz-fit-content;
   }
-  
+
+.el-cursive {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1em; /* adjust size to balance with "Musico" */
+    font-weight: normal;
+}
+
+
 #audio-player{
   right: 0px;
   left: 0px;

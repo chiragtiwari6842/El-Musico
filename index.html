@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="title-box">Music Player</title>
+    <title id="title-box">El-Musico</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bitter:400,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700">
 </head>
@@ -14,48 +15,135 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 offset-md-2">
-                    <h1 class="text-center" style="margin: 0px;user-select: none;">El-Musico</h1>
-                    <h3 class="text-center" style="color: rgba(249,255,255,0.81);font-family: Bitter, serif;user-select: none;">Where Music Comes Alive</h3>
+                    <h1 
+                        class="text-center" 
+                        style="margin: 0px;
+                               user-select: none;">
+                        <span class="el-cursive">El - Musico</span>
+                    </h1>
+                    <h3 
+                        class="text-center" 
+                        style="color: rgba(249,255,255,0.81);
+                               font-family: Bitter, serif;
+                               user-select: none;">
+                        Where Music Comes Alive
+                    </h3>
                 </div>
             </div>
         </div>
     </header>
     <div>
         <div class="tab-content">
-            <div class="tab-pane active" role="tabpanel" id="tab-1">
-                <section class="highlight-clean" style="background: url('assets/el-musico_background.png') no-repeat center center fixed; color: rgb(249,249,249);padding-top: 20px;">
+            <div 
+                class="tab-pane active" 
+                role="tabpanel" 
+                id="tab-1">
+                <section 
+                    class="highlight-clean" 
+                    style="background: url('assets/el-musico_background.png') no-repeat center center fixed; 
+                           color: rgb(249,249,249);
+                           padding-top: 20px;">
                     <div class="text-center">
                         <select id="music-bitrate">
-                            <option value="3">8D (NEW)</option>
-                            <option value="4" selected="">320kbps(default)</option>
-                            <option value="3">160kbps</option>
-                            <option value="2">96kbps</option>
-                            <option value="1">48kbps</option>
-                        </select></div>
-                        <!-- <div id="suggestions-button" class="suggestions-button">
-                            <span class="suggestions-text" style="font-family: Bitter, serif; width: 115px; margin-right: 0px;user-select: none;"s>Auto-Playlist</span>
-                            <div class="dot" id="dot"></div>
-                            <div class="suggestion-fill-bar" style="margin-left: 0px; width: 40px; height: 14px;" onclick="toggleAutomatedSongSuggestions()">
-                                <div id="suggestion-fill" class="suggestion-fill"></div>
-                            </div>
-                            <button id="toggle-suggestions" class="toggle-button on" style= "font-family: Bitter, serif;" onclick="toggleAutomatedSongSuggestions()">ON</button>
-                        </div> -->
+                            <option 
+                                value="5">
+                                8D (NEW)
+                            </option>
+                            <option 
+                                value="4" 
+                                selected="">
+                                320kbps(default)
+                            </option>
+                            <option 
+                                value="3">
+                                160kbps
+                            </option>
+                            <option 
+                                value="2">
+                                96kbps
+                            </option>
+                            <option 
+                                value="1">
+                                48kbps
+                            </option>
+                        </select>
+                    </div>
                     <p class="text-center" style="padding: 0px 5px;"></p>
                     <div class="container" style="padding: 0px;">
                         <div class="intro">
-                            <form class="text-center" action="#" method="get">
-                                <div style="width: 95%;margin: auto;padding: 3px;" placeholder="Enter Song, Artist or Album name"><input class="form-control float-left fit-content" type="text" id="music-search-box" style="margin: 0px;color: var(--gray-dark);max-width: 100%;width: 75%;border-radius: 20px;" placeholder="Search for a Song or Artist" autocomplete="off"><button class="btn btn-primary" id="search-trigger" type="submit" title="Search" style="text-align: center; border-radius: 20px;" onclick="MusicSearch()">Search</button>
+                            <form 
+                                class="text-center" 
+                                action="#" 
+                                method="get">
+                                <div 
+                                    style="width: 95%;
+                                           margin: auto;
+                                           padding: 3px;" 
+                                    placeholder="Enter Song, Artist or Album name">
+                                    <input 
+                                        class="form-control float-left fit-content" 
+                                        type="text" 
+                                        id="music-search-box" 
+                                        style="margin: 0px;
+                                               color: var(--gray-dark);
+                                               max-width: 100%;
+                                               width: 75%;
+                                               border-radius: 20px;" 
+                                        placeholder="Search for a Song or Artist" 
+                                        autocomplete="off">
+                                        <button 
+                                            class="btn btn-primary" 
+                                            id="search-trigger" 
+                                            type="submit" 
+                                            title="Search" 
+                                            style="text-align: center; 
+                                                   border-radius: 20px;" 
+                                            onclick="MusicSearch()">
+                                            Search
+                                        </button>
                                     </div>
                             </form>
-                            <button style="color: #2d5f6e; height: auto; width: auto; margin-right: 0px; display: flex; align-items: center; justify-content: center;" onclick="showPlaylists()">Playlists</button>
-                             <button style="color: #2d5f6e; height: auto; width: auto; margin-right: 0px; display: flex; align-items: center; justify-content: center;" onclick="playAll()">Play All</button>
+                            <button 
+                                style="color: #2d5f6e; 
+                                       height: auto; 
+                                       width: auto; 
+                                       margin-right: 0px; 
+                                       display: flex; 
+                                       align-items: center; 
+                                       justify-content: center;" 
+                                onclick="showPlaylists()">
+                                Playlists
+                            </button>
+                             <button 
+                                style="color: #2d5f6e; 
+                                       height: auto; 
+                                       width: auto; 
+                                       margin-right: 0px; 
+                                       display: flex; 
+                                       align-items: center; 
+                                       justify-content: center;" 
+                                onclick="playAll()">
+                                Play All
+                            </button>
                         </div>
-                            <div id="music-results" style="margin-bottom: 20px;">
+                            <div 
+                                id="music-results" 
+                                style="margin-bottom: 20px;">
                                 <h5>Featured</h5>
                             </div>
                             <div class="text-center" style="width:100%">
-                                <button id="first-page" title="First Page" style="width: 48%;user-select: none;">Back To First Page</button>
-                                <button id="next" title="Next" style="width: 48%;user-select: none;">Next</button>
+                                <button 
+                                    id="first-page" 
+                                    title="First Page" 
+                                    style="width: 48%;user-select: none;">
+                                    Back To First Page
+                                </button>
+                                <button 
+                                    id="next" 
+                                    title="Next" 
+                                    style="width: 48%;user-select: none;">
+                                    Next
+                                </button>
                             </div>
                             <div class="button-container">
                             </div>
@@ -69,27 +157,77 @@
     <div class="music-player" id="audio-player">
         <div class="progress-controller">
             <div class="control-buttons">
-                <img id="repeat" class="repeat-button" src="assets/repeat.png" alt="Repeat" onclick="repeatSong()">
-                <svg id="left-seek" class="left-button" onclick="playPreviousSong()" xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 24 24" fill="#fff" style="cursor:pointer;">
-                <polygon points="3 5 11 12 3 19" />
-                <polygon points="11 5 19 12 11 19" />
+                <img 
+                    id="repeat" 
+                    class="repeat-button" 
+                    src="assets/repeat.png" 
+                    alt="Repeat" 
+                    onclick="repeatSong()">
+                <svg 
+                    id="left-seek" 
+                    class="left-button" 
+                    onclick="playPreviousSong()" 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    width="40" 
+                    height="32" 
+                    viewBox="0 0 24 24" 
+                    fill="#fff" 
+                    style="cursor:pointer;">
+                    <polygon 
+                        points="3 5 11 12 3 19" />
+                    <polygon 
+                    points="11 5 19 12 11 19" />
                 </svg>
+                
                 <span class="tooltip">Prev Song</span>
-                <svg id="play-pause-icon" class="play-pause" onclick="togglePlay()" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#fff" style="cursor:pointer;">
-                    <polygon points="6,4 20,12 6,20" />
+                
+                <svg 
+                    id="play-pause-icon" 
+                    class="play-pause" 
+                    onclick="togglePlay()" 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    width="32" 
+                    height="32" 
+                    viewBox="0 0 24 24" 
+                    fill="#fff" 
+                    style="cursor:pointer;">
+                    <polygon 
+                        points="6,4 20,12 6,20" />
                 </svg>
-                <svg id="right-seek" class="right-button" onclick="playNextSong()" xmlns="http://www.w3.org/2000/svg" width="40" height="32" viewBox="0 0 24 24" fill="#fff" style="cursor:pointer;">
-                <polygon points="3 5 11 12 3 19" />
-                <polygon points="11 5 19 12 11 19" />
+                
+                <svg 
+                    id="right-seek" 
+                    class="right-button" 
+                    onclick="playNextSong()" 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    width="40" 
+                    height="32" 
+                    viewBox="0 0 24 24" 
+                    fill="#fff" 
+                    style="cursor:pointer;">
+                    <polygon 
+                        points="3 5 11 12 3 19" />
+                    <polygon 
+                        points="11 5 19 12 11 19" />
                 </svg>
 
                 <span class="tooltip">Next Song</span>
-                <img id="queue" class="queue-button" src="assets/queue.png" alt="Show Queue" onclick="showQueue()">
+                
+                <img 
+                    id="queue" 
+                    class="queue-button" 
+                    src="assets/queue.png" 
+                    alt="Show Queue" 
+                    onclick="showQueue()">
                 <span class="tooltip">Show Queue</span>
             </div>
+
             <div class="progress-container">
                 <span id="current-time" class="duration-bar">0:00</span>
-                <div class="progress-bar" id="progress-bar" onclick="seekTo(event)">
+                <div 
+                    class="progress-bar" 
+                    id="progress-bar" 
+                    onclick="seekTo(event)">
                     <div class="progress" id="progress"></div>
                 </div>
                 <span id="duration" class="duration-bar">0:00</span>
@@ -97,14 +235,31 @@
         </div>
         <div class="other-features">
             <div class="volume-bar">
-                <img id="volume-control" class="volume-control" src="assets/volume.png" alt="Volume" onclick="toggleVolume()">
-                <input type="range" class="volume-slider" id="volume-slider" min="0" max="1" step="0.1" value="1" />
+                <img 
+                    id="volume-control" 
+                    class="volume-control" 
+                    src="assets/volume.png" 
+                    alt="Volume" 
+                    onclick="toggleVolume()">
+                <input 
+                    type="range" 
+                    class="volume-slider" 
+                    id="volume-slider" 
+                    min="0" 
+                    max="1" 
+                    step="0.1" 
+                    value="1" />
                 <div class="progress-bar">
                     <div class="progress" id="volume"></div>
                 </div>
             </div>
         </div>
-        <audio id="player" controls="controls" controlsList="nodownload" crossorigin="anonymous" style="display: none;">
+        <audio 
+            id="player" 
+            controls="controls" 
+            controlsList="nodownload" 
+            crossorigin="anonymous" 
+            style="display: none;">
             <source id="audioSource" src="">
             Your browser does not support the audio format.
         </audio>
@@ -301,20 +456,20 @@
             cursor: pointer;
         }
         .volume-slider:hover {
-            background: #055ada;
+            background: #ffffff;
         }
         .volume-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 16px;
             height: 16px;
-            background: #055ada;
+            background: #ffffff;
             border-radius: 50%;
             cursor: pointer;
         }
         .volume-slider::-moz-range-thumb {
             width: 16px;
             height: 16px;
-            background: #fff;
+            background: #ffffff;
             border-radius: 50%;
             cursor: pointer;
         }
@@ -466,6 +621,7 @@
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.bundle.min.js"></script>
+    <script src="suggestion.js"></script>
     <script src="functions.js"></script>
     <script src="search.js"></script>
     <script src="shortcuts.js"></script>
