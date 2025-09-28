@@ -19,23 +19,6 @@ function MusicSearch() {
 }
 var page_index = 1;
 
-function nextPage(){
-    var query = document.querySelector("#music-search-box").value.trim();
-    if (!query){
-        query = lastSearch;
-    }
-    query = encodeURIComponent(query);
-    doMusicSearch(query,0,true)
-}
-
-function backToFirstPage() {
-    var query = document.querySelector("#music-search-box").value.trim();
-    if (!query){
-        query = lastSearch;
-    }
-    doMusicSearch(query,0,false);
-}
-
 async function doMusicSearch(query,NotScroll,page){
     window.location.hash = query;
     document.querySelector("#music-search-box").value = decodeURIComponent(query);
@@ -114,9 +97,9 @@ async function doMusicSearch(query,NotScroll,page){
             <div class="text-left song-container" style="margin-bottom:20px;border-radius:35px;background-color:#1c1c1c;padding:10px;">
                 <div class="row" style="margin:auto;">
                     <div class="col-auto" style="padding:0px;padding-right:0px;border-style:none;">
-                        <img id="${song_id}-i" class="img-fluid d-inline" style="width:115px;border-radius:5px;height:115px;padding-right:10px;border-radius:90px;user-select:none;" src="${song_image}" loading="eager"/>
+                        <img id="${song_id}-i" class="img-fluid d-inline user-select-none" style="width:115px;border-radius:5px;height:115px;padding-right:10px;border-radius:90px;" src="${song_image}" loading="eager"/>
                     </div>
-                    <div class="col" style="border-style:none;padding:2px;user-select:none;">
+                    <div class="col user-select-none" style="border-style:none;padding:2px;">
                         <p class="float-right fit-content" style="margin:0px;color:#fff;padding-right:10px;">${year}</p>
                         <p id="${song_id}-n" class="fit-content" style="margin:0px;color:#fff;max-width:100%;">${song_name}</p>
                         <p id="${song_id}-a" class="fit-content" style="margin:0px;color:#fff;max-width:100%;">${album_name}<br/></p>
@@ -150,19 +133,6 @@ async function doMusicSearch(query,NotScroll,page){
     }
 }
 
-function TextAbstract(text, length){
-    if (text == null){
-        return "";
-    }
-    if(text.length <= length){
-        return text;
-    }
-    text = text.substring(0, length);
-    last = text.lastIndexOf(" ");
-    text = text.substring(0, last);
-    return text + "...";
-}
-
 if(window.location.hash){
    doMusicSearch(window.location.hash.substring(1));
 } 
@@ -176,6 +146,3 @@ onhashchange = event => {doMusicSearch(window.location.hash.substring(1))};
 $('#music-bitrate').on('change', function (){
     doMusicSearch(lastSearch);
 });
-
-document.getElementById("next").addEventListener('click',nextPage)
-document.getElementById("first-page").addEventListener('click', backToFirstPage)

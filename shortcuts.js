@@ -9,16 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.code === 'Space' || event.code == 'Enter') {
             event.preventDefault();
             togglePlay();
-            // event.preventDefault();
-            // if (songQueue.length > 0 || playedSongs.length > 0) {
-            //     if (player.paused) {
-            //         player.play();
-            //         document.querySelector('.play-pause').src = "assets/pause.png"; 
-            //     } else {
-            //         player.pause();
-            //         document.querySelector('.play-pause').src = "assets/play.png"; 
-            //     }
-            // }
         }
 
         if (event.code === 'ArrowUp' || event.code === 'ArrowRight') {
@@ -63,7 +53,8 @@ document.addEventListener('DOMContentLoaded', function() {
             playPreviousSong();
         }
 
-        if (event.ctrlKey && (event.altKey && (event.key.toLowerCase() === 'r'))) {
+        if (event.ctrlKey && (event.altKey && (event.key.toLowerCase() === 'r') || 
+            (event.shiftKey && (event.key.toLowerCase() === 'r'))) ){
             event.preventDefault();
             repeatSong();
         }
@@ -116,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 messageElement.style.left = '50%';
                 // messageElement.style.bottom = '0px'
                 messageElement.style.transform = 'translate(-50%, -50%)';
-                messageElement.style.height = '490px';
+                messageElement.style.height = '550px';
                 messageElement.style.width = '400px';
                 messageElement.style.backgroundColor = '#333';
                 messageElement.style.color = '#fff';
